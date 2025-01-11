@@ -3,10 +3,17 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { FaFilePdf } from "react-icons/fa";
 
+// Define the structure of a file object
+interface FileData {
+  title: string;
+  pdf: string;
+  date: string; // Include the date field
+}
+
 const UploadPage = () => {
-  const [title, setTitle] = useState("");
-  const [file, setFile] = useState("");
-  const [allFiles, setAllFiles] = useState([]);
+  const [title, setTitle] = useState<string>("");
+  const [file, setFile] = useState<File | null>(null);
+  const [allFiles, setAllFiles] = useState<FileData[]>([]);
 
   useEffect(() => {
     getPdfs();
@@ -20,15 +27,22 @@ const UploadPage = () => {
       setAllFiles(result.data.data);
       console.log(result.data.data);
     } catch (error) {
-      console.error("Error fetching files:", error.message);
+      console.error("Error fetching files:", error);
     }
   };
 
-  const submitPdf = async (e) => {
+  const submitPdf = async (e: React.FormEvent) => {
     e.preventDefault();
     const formData = new FormData();
+
     formData.append("title", title);
-    formData.append("file", file);
+
+    if (file) {
+      formData.append("file", file);
+    } else {
+      console.error("No file selected.");
+      return;
+    }
 
     try {
       const result = await axios.post(
@@ -41,9 +55,9 @@ const UploadPage = () => {
         }
       );
       console.log(result);
-      getPdfs(); // Refresh the file list after upload
+      getPdfs();
     } catch (error) {
-      console.error("Error uploading file:", error.message);
+      console.error("Error uploading file:", error);
     }
   };
 
@@ -82,7 +96,7 @@ const UploadPage = () => {
             <input
               type="file"
               id="file"
-              onChange={(e) => setFile(e.target.files[0])}
+              onChange={(e) => setFile(e.target.files?.[0] || null)}
               accept="application/pdf"
               required
               className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
@@ -108,6 +122,7 @@ const UploadPage = () => {
               <tr>
                 <th className="text-left px-4 py-2">Sl</th>
                 <th className="text-left px-4 py-2">Title</th>
+                <th className="text-left px-4 py-2">Date</th>
                 <th className="text-left px-4 py-2">File</th>
               </tr>
             </thead>
@@ -119,6 +134,10 @@ const UploadPage = () => {
                 >
                   <td className="px-4 py-2">{index + 1}</td>
                   <td className="px-4 py-2">{file.title}</td>
+                  <td className="px-4 py-2">
+                    {new Date(file.date).toLocaleDateString()}{" "}
+                    {/* Format the date */}
+                  </td>
                   <td className="px-4 py-2">
                     <a
                       href={`http://localhost:5000/files/${file.pdf}`}
