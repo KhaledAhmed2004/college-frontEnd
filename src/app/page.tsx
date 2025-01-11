@@ -12,15 +12,16 @@ export default function Home() {
     <div>
       <Navbar />
       <HeroSection />
-      <div className="max-w-7xl mx-auto flex gap-4">
-        <div>
+      <div className="max-w-7xl mx-auto flex gap-4 flex-col md:flex-row">
+        <div className="flex-1">
           <NoticBoardScection />
           <AboutSection />
         </div>
-        <div>
+        <div className="flex-1 mt-4 md:mt-0">
           <SideBarSection />
         </div>
       </div>
+
       <AboutPrincipel />
       <StatisticSection />
       <Footer />

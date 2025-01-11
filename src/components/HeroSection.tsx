@@ -5,6 +5,7 @@ import { FaUniversity, FaBook, FaChalkboardTeacher } from "react-icons/fa";
 
 const HeroSection = () => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // Track mobile menu state
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +18,8 @@ const HeroSection = () => {
     };
   }, []);
 
+  const toggleMenu = () => setIsMenuOpen(!isMenuOpen); // Toggle mobile menu state
+
   return (
     <div>
       <nav
@@ -24,13 +27,14 @@ const HeroSection = () => {
           isScrolled ? "hidden bg-gray-800/80 shadow-lg" : ""
         }`}
       >
-        <div className="max-w-7xl mx-auto flex justify-between items-center">
+        <div className="max-w-7xl mx-auto flex justify-between items-center px-4">
           <div>
             <h2 className="text-xl font-bold text-white">
               Rajbari Govt College
             </h2>
           </div>
-          <div>
+          {/* Desktop Navbar */}
+          <div className="hidden md:flex">
             <ul className="flex gap-4 font-semibold cursor-pointer text-white">
               <li>HOME</li>
               <li>ADMINISTRATION</li>
@@ -42,8 +46,57 @@ const HeroSection = () => {
               <li>CONTACT US</li>
             </ul>
           </div>
+          {/* Mobile Menu Button */}
+          <div className="md:hidden flex items-center">
+            <button
+              onClick={toggleMenu}
+              className="text-white focus:outline-none"
+            >
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                className="w-6 h-6"
+              >
+                {isMenuOpen ? (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M6 18L18 6M6 6l12 12"
+                  />
+                ) : (
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16M4 18h16"
+                  />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
       </nav>
+
+      {/* Mobile Navbar */}
+      <div
+        className={`${
+          isMenuOpen ? "block" : "hidden"
+        } md:hidden bg-gray-800/80 shadow-lg`}
+      >
+        <ul className="flex flex-col items-center gap-4 py-4 text-white font-semibold">
+          <li>HOME</li>
+          <li>ADMINISTRATION</li>
+          <li>CO CURRICULUM</li>
+          <li>HOSTEL</li>
+          <li>LIBRARY & SPOTS</li>
+          <li>FACULTY</li>
+          <li>GALLERIES</li>
+          <li>CONTACT US</li>
+        </ul>
+      </div>
 
       <Carousel arrows>
         {/* First Slide */}
