@@ -12,14 +12,27 @@ export default function Home() {
     <div>
       <Navbar />
       <HeroSection />
-      <div className="max-w-7xl mx-auto flex gap-4 flex-col md:flex-row">
+      {/* <div className="max-w-7xl mx-auto flex gap-4 flex-col md:flex-row">
+        <div className="w-[75%]">
+          <NoticBoardScection />
+          <AboutSection />
+        </div>
+        <div className="w-[25%] mt-4 md:mt-0">
+          <SideBarSection />
+        </div>
+      </div> */}
+      {/* Main Content */}
+      <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row gap-6 mt-6">
+        {/* Left Content */}
         <div className="flex-1">
           <NoticBoardScection />
           <AboutSection />
         </div>
-        <div className="flex-1 mt-4 md:mt-0">
+
+        {/* Right Sidebar */}
+        <aside className="w-full md:w-1/4">
           <SideBarSection />
-        </div>
+        </aside>
       </div>
 
       <AboutPrincipel />
